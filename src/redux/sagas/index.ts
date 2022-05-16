@@ -1,4 +1,4 @@
-import { take, takeEvery, takeLatest, takeLeading, put, call, fork  } from 'redux-saga/effects';
+import { take, takeEvery, takeLatest, takeLeading, put, call, fork, spawn, select  } from 'redux-saga/effects';
 import axios from 'axios';
 
 const wait = (t: number) => new Promise((resolve) => {
@@ -39,8 +39,10 @@ async function swapiGet(pattern: string) {
 }
 
 export function* workerSaga(): any {
-    yield fork(loadPeople);
-    yield fork(loadPlanets);
+    yield spawn(loadPeople);
+    yield spawn(loadPlanets);
+    const store =  yield select(s => s);
+    console.log('store', store);
     // yield wait(2000);
     // console.log('click from saga');
 }
